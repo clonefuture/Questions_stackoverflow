@@ -6,18 +6,17 @@ from pprint import pprint
 
 
 def get_questions(num_of_days, tagged):
-    global list_question
+    list_question = []
     sec = num_of_days * 86400
     date_time = round(time.time() - sec)
     tagged = tagged.lower()
 
-    url = f'https://api.stackexchange.com/2.3/questions?fromdate={date_time}&order=desc&sort=creation&tagged={tagged}&site=stackoverflow'
+    url = 'https://api.stackexchange.com/2.3/questions?&order=desc&sort=creation&site=stackoverflow'
     x = 0
     has_more = True
-    list_question = []
     while has_more is True:
         x += 1
-        params = {'page': x, 'pagesize': 100}
+        params = {'page': x, 'pagesize': 100, 'fromdate': date_time, 'tagged': tagged}
         resp = requests.get(url, params=params)
         for items in resp.json()['items']:
             list_question.append(items['title'])
